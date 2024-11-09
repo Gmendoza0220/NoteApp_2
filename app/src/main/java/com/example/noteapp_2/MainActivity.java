@@ -3,6 +3,7 @@ package com.example.noteapp_2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -52,10 +53,36 @@ public class MainActivity extends AppCompatActivity {
 
             if(notas.size() > 0){
                 Toast.makeText(this, "Nota creada correctamente", Toast.LENGTH_SHORT).show();
+                cargarNotas(); // NUEVO METODO PARA CARGAR DATOS LUEGO DE CREAR NOTA
+
             } else {
                 Toast.makeText(this, "La nota no se pudo guardar :(", Toast.LENGTH_SHORT).show();
             }
         }
+
+    }
+
+    // FUNCIONALIDAD 2 - VER NOTAS CREADAS
+
+    public void cargarNotas(){
+
+        if(notas.size() > 0){
+
+            ArrayList<String> contenidoNotas = new ArrayList<>();
+
+            for(int i = 0; i < notas.size(); i++){
+
+                Nota nota = notas.get(i);
+
+                String fila = "Titulo: " + nota.getTitulo() + " Cuerpo: " + nota.getCuerpo();
+                contenidoNotas.add(fila);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contenidoNotas);
+            listNotas.setAdapter(adapter);
+
+        }
+
 
     }
 

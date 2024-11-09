@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btnEliminarNota = findViewById(R.id.btnEliminarNota);
         listNotas = findViewById(R.id.listNotas);
 
+        cargarNotas();
 
     }
 
@@ -66,30 +67,53 @@ public class MainActivity extends AppCompatActivity {
 
     public void cargarNotas(){
 
-        if(notas.size() > 0){
+        ArrayList<String> contenidoNotas = new ArrayList<>();
 
-            ArrayList<String> contenidoNotas = new ArrayList<>();
+        for(int i = 0; i < notas.size(); i++){
+
+            Nota nota = notas.get(i);
+
+            String fila = "Titulo: " + nota.getTitulo() + " Cuerpo: " + nota.getCuerpo();
+            contenidoNotas.add(fila);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contenidoNotas);
+        listNotas.setAdapter(adapter);
+
+    }
+
+    // FUNCIONALIDAD 3 - ELIMINAR NOTAS
+
+    public void eliminarNotas(View view){
+
+        String tituloNotaEliminar = txtNotaEliminar.getText().toString();
+
+        if(tituloNotaEliminar.isEmpty()){
+            Toast.makeText(this, "Ingrese el titulo de la nota a eliminar", Toast.LENGTH_SHORT).show();
+        } else {
+
+            boolean encontrado = false;
 
             for(int i = 0; i < notas.size(); i++){
 
                 Nota nota = notas.get(i);
 
-                String fila = "Titulo: " + nota.getTitulo() + " Cuerpo: " + nota.getCuerpo();
-                contenidoNotas.add(fila);
+                if(nota.getTitulo().equals(tituloNotaEliminar)){
+                    notas.remove(nota);
+                    encontrado = true;
+                    break;
+                }
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contenidoNotas);
-            listNotas.setAdapter(adapter);
+            if(encontrado){
+                Toast.makeText(this, "Nota eliminada exitosamente", Toast.LENGTH_SHORT).show();
+                cargarNotas();
+            } else {
+                Toast.makeText(this, "Nota no encontrada :(", Toast.LENGTH_SHORT).show();
+            }
 
         }
 
-
     }
-
-
-
-
-
-
 
 }
